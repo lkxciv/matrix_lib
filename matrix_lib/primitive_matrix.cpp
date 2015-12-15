@@ -37,10 +37,12 @@ Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
 	height = h;
 	width = w;
 	//dyn. array aufspannen
-	matrix = new float*[height];
+	//matrix = new float*[height];
+	matrix = (float **)calloc(height, sizeof(float **));
 	for (unsigned int i = 0; i < height; i++)
 	{
-		matrix[i] = new float[width];
+		//matrix[i] = new float[width];
+		matrix[i] = (float *)calloc(width, sizeof(float *));
 	}
 }
 
@@ -50,10 +52,12 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 	height = h;
 	width = w;
 	//dyn. array aufspannen
-	matrix = new float*[height];
+	//matrix = new float*[height];
+	matrix = (float **)calloc(height, sizeof(float **));
 	for (unsigned int i = 0; i < height; i++)
 	{
-		matrix[i] = new float[width];
+		//matrix[i] = new float[width];
+		matrix[i] = (float *)calloc(width, sizeof(float *));
 		//Gleichzeitiges Kopieren der Arrayzeilen - TESTEN!
 		std::copy(matrix[i], matrix[i] + width, arr[i]);
 	}
@@ -64,7 +68,8 @@ Primitive_Matrix::~Primitive_Matrix()
 	for (unsigned int i = 0; i < height; i++)
 	{
 		//dyn Array auf jeder Zeile wird gelöscht
-		delete[] matrix[i];
+		//delete[] matrix[i];
+		free(matrix[i]);
 	}
 }
 
@@ -76,7 +81,8 @@ void Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 		for (unsigned int i = height - 1; i >= newHeight; i--)
 		{
 			//dyn Array auf betroffenen Zeile wird gelöscht
-			delete[] matrix[i];
+			//delete[] matrix[i];
+			free(matrix[i]);
 		}
 		height = newHeight;
 	}
@@ -86,7 +92,8 @@ void Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 		for (unsigned int i = height - 1; i < newHeight; i++)
 		{
 			//dyn Array auf betroffenen Zeile wird hinzugefügt
-			matrix[i] = new float[width];
+			//matrix[i] = new float[width];
+			matrix[i] = (float *)calloc(width, sizeof(float *));
 		}
 		height = newHeight;
 	}
