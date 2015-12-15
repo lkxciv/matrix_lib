@@ -2,6 +2,7 @@
 #define _SCL_SECURE_NO_WARNINGS
 
 #include <algorithm>
+#include <cstdlib>
 
 class Primitive_Matrix
 {
@@ -21,6 +22,12 @@ public:
 
 	//Destruktor
 	~Primitive_Matrix();
+
+	//Ändert Höhe
+	void ChangeHeight(unsigned int newHeight);
+
+	//Ändert Breite
+	void ChangeWidth(unsigned int newWidth);
 
 };
 
@@ -58,5 +65,41 @@ Primitive_Matrix::~Primitive_Matrix()
 	{
 		//dyn Array auf jeder Zeile wird gelöscht
 		delete[] matrix[i];
+	}
+}
+
+void Primitive_Matrix::ChangeHeight(unsigned int newHeight)
+{
+	//neue höhe kleiner als alte: zeilen löschen, bis newHeight -1
+	if (newHeight < height)
+	{
+		for (unsigned int i = height - 1; i >= newHeight; i--)
+		{
+			//dyn Array auf betroffenen Zeile wird gelöscht
+			delete[] matrix[i];
+		}
+		height = newHeight;
+	}
+	//neue höhe größer als alte: zeilen hinzufügen
+	else if (newHeight > height)
+	{
+		for (unsigned int i = height - 1; i < newHeight; i++)
+		{
+			//dyn Array auf betroffenen Zeile wird hinzugefügt
+			matrix[i] = new float[width];
+		}
+		height = newHeight;
+	}
+}
+
+void Primitive_Matrix::ChangeWidth(unsigned int newWidth)
+{
+	//neue breite kleiner als alte: spalten löschen, bis newWidth -1
+	if (newWidth < width)
+	{
+		for (unsigned int i = 0; i < height; i++)
+		{
+			
+		}
 	}
 }
