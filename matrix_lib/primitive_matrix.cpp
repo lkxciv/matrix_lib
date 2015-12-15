@@ -1,3 +1,6 @@
+//std::copy wird nur durch zeiger aufgerufen, deswegen muss die Warnung deaktiviert werden
+#define _SCL_SECURE_NO_WARNINGS
+
 #include <algorithm>
 
 class Primitive_Matrix
@@ -28,7 +31,7 @@ Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
 	width = w;
 	//dyn. array aufspannen
 	matrix = new float*[height];
-	for (int i = 0; i < height; i++)
+	for (unsigned int i = 0; i < height; i++)
 	{
 		matrix[i] = new float[width];
 	}
@@ -41,7 +44,7 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 	width = w;
 	//dyn. array aufspannen
 	matrix = new float*[height];
-	for (int i = 0; i < height; i++)
+	for (unsigned int i = 0; i < height; i++)
 	{
 		matrix[i] = new float[width];
 		//Gleichzeitiges Kopieren der Arrayzeilen - TESTEN!
@@ -51,7 +54,7 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 
 Primitive_Matrix::~Primitive_Matrix()
 {
-	for (int i = 0; i < height; i++)
+	for (unsigned int i = 0; i < height; i++)
 	{
 		//dyn Array auf jeder Zeile wird gelöscht
 		delete[] matrix[i];
