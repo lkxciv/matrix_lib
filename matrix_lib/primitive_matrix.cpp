@@ -29,6 +29,9 @@ public:
 	//Ändert Breite
 	bool ChangeWidth(unsigned int newWidth);
 
+	//Ändert Größe
+	bool ChangeSize(unsigned int newHeight, unsigned int newWidth);
+
 };
 
 Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
@@ -76,6 +79,7 @@ Primitive_Matrix::~Primitive_Matrix()
 bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)//Testen!
 {
 	//höhen array realloc mit überprüfung
+	//bei realloc wird mtrix automatisch deallocated, wenn nicht NULL
 	float **temp = (float **)realloc(matrix, newHeight * width * sizeof(float **));
 	if (temp != NULL)
 	{
@@ -127,6 +131,18 @@ bool Primitive_Matrix::ChangeWidth(unsigned int newWidth)//Testen!
 			return 0;
 		}
 	}
+	width = newWidth;
 
 	return 1;
+}
+
+bool Primitive_Matrix::ChangeSize(unsigned int newHeight, unsigned int newWidth)
+{
+	//Beide müssen klappen
+	if (ChangeHeight(newHeight) == 1 && ChangeWidth(newWidth) == 1)
+	{
+		return 1;
+	}
+
+	return 0;
 }
