@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 class Primitive_Matrix
 {
@@ -30,6 +31,9 @@ public:
 
 	//Ändert Größe
 	bool ChangeSize(unsigned int newHeight, unsigned int newWidth);
+
+	//Zu string
+	std::string ToString();
 
 };
 
@@ -145,4 +149,21 @@ bool Primitive_Matrix::ChangeSize(unsigned int newHeight, unsigned int newWidth)
 	}
 
 	return 0;
+}
+
+std::string Primitive_Matrix::ToString()
+{
+	std::string s = "";
+
+	for (int row = 0; row < height; row++)//Schleife Zeilen
+	{
+		s += "[ ";
+		for (int col = 0; col < width; col++)//Schleife Spalten in einer Zeile
+		{
+			s += (std::to_string( matrix[row][col] ) + " ");
+		}
+		s += "]\n";
+	}
+
+	return s;
 }
