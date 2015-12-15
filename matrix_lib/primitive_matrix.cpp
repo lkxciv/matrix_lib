@@ -27,7 +27,7 @@ public:
 	void ChangeHeight(unsigned int newHeight);
 
 	//Ändert Breite
-	void ChangeWidth(unsigned int newWidth);
+	bool ChangeWidth(unsigned int newWidth);
 
 };
 
@@ -92,14 +92,22 @@ void Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 	}
 }
 
-void Primitive_Matrix::ChangeWidth(unsigned int newWidth)
+bool Primitive_Matrix::ChangeWidth(unsigned int newWidth)//Testen!
 {
-	//neue breite kleiner als alte: spalten löschen, bis newWidth -1
-	if (newWidth < width)
+	//neue breite kleiner als alte: spalten realloc
+	for (unsigned int i = 0; i < height; i++)
 	{
-		for (unsigned int i = 0; i < height; i++)
+		float *temp = (float *)realloc(matrix[i], newWidth * sizeof(float));
+
+		if (temp != NULL)
 		{
-			
+			matrix[i] = temp;
+		}
+		else if (temp == NULL)
+		{
+			return 0;
 		}
 	}
+
+	return 1;
 }
