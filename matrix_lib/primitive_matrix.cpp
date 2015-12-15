@@ -1,8 +1,7 @@
 //std::copy wird nur durch zeiger aufgerufen, deswegen muss die Warnung deaktiviert werden
-#define _SCL_SECURE_NO_WARNINGS
 
-#include <algorithm>
 #include <cstdlib>
+#include <cstring>
 
 class Primitive_Matrix
 {
@@ -62,7 +61,8 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 		//matrix[i] = new float[width];
 		matrix[i] = (float *)calloc(width, sizeof(float *));
 		//Gleichzeitiges Kopieren der Arrayzeilen - TESTEN!
-		std::copy(matrix[i], matrix[i] + width, arr[i]);
+		//std::copy(matrix[i], matrix[i] + width, arr[i]); algorithm und #define _SCL_SECURE_NO_WARNINGS benötigt
+		memcpy(matrix[i], arr[i], width * sizeof(float));
 	}
 }
 
