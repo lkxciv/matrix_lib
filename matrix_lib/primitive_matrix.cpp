@@ -44,11 +44,11 @@ Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
 	width = w;
 	//dyn. array aufspannen
 	//matrix = new float*[height];
-	matrix = (float **)calloc(height, sizeof(float **));
+	matrix = (float **)calloc(height, sizeof(float *));
 	for (unsigned int i = 0; i < height; i++)
 	{
 		//matrix[i] = new float[width];
-		matrix[i] = (float *)calloc(width, sizeof(float *));
+		matrix[i] = (float *)calloc(width, sizeof(float));
 	}
 }
 
@@ -59,11 +59,11 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 	width = w;
 	//dyn. array aufspannen
 	//matrix = new float*[height];
-	matrix = (float **)calloc(height, sizeof(float **));
+	matrix = (float **)calloc(height, sizeof(float *));
 	for (unsigned int i = 0; i < height; i++)
 	{
 		//matrix[i] = new float[width];
-		matrix[i] = (float *)calloc(width, sizeof(float *));
+		matrix[i] = (float *)calloc(width, sizeof(float));
 		//Gleichzeitiges Kopieren der Arrayzeilen - TESTEN!
 		//std::copy(matrix[i], matrix[i] + width, arr[i]); algorithm und #define _SCL_SECURE_NO_WARNINGS benötigt
 		memcpy(matrix[i], arr[i], width * sizeof(float));
@@ -84,7 +84,7 @@ bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)//Testen!
 {
 	//höhen array realloc mit überprüfung
 	//bei realloc wird mtrix automatisch deallocated, wenn nicht NULL
-	float **temp = (float **)realloc(matrix, newHeight * width * sizeof(float **));
+	float **temp = (float **)realloc(matrix, newHeight * width * sizeof(float *));
 	if (temp != NULL)
 	{
 		matrix = temp;
@@ -111,7 +111,7 @@ bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)//Testen!
 		{
 			//dyn Array auf betroffenen Zeile wird hinzugefügt
 			//matrix[i] = new float[width];
-			matrix[i] = (float *)calloc(width, sizeof(float *));
+			matrix[i] = (float *)calloc(width, sizeof(float));
 		}
 		height = newHeight;
 	}
