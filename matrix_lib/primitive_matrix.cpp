@@ -82,9 +82,9 @@ Primitive_Matrix::~Primitive_Matrix()
 
 bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)//Testen!
 {
-	//höhen array realloc mit überprüfung
+	//höhen array realloc mit neuer höhe und überprüfung
 	//bei realloc wird mtrix automatisch deallocated, wenn nicht NULL
-	float **temp = (float **)realloc(matrix, newHeight * width * sizeof(float *));
+	float **temp = (float **)realloc(matrix, newHeight * sizeof(float *));
 	if (temp != NULL)
 	{
 		matrix = temp;
