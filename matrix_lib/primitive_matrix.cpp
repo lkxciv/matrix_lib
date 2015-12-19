@@ -93,28 +93,7 @@ bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)//Testen!
 	{
 		return 0;
 	}
-	//neue höhe kleiner als alte: zeilen löschen, bis newHeight -1
-	if (newHeight < height)
-	{
-		for (unsigned int i = height - 1; i >= newHeight; i--)
-		{
-			//dyn Array auf betroffenen Zeile wird gelöscht
-			//delete[] matrix[i];
-			free(matrix[i]);
-		}
-		height = newHeight;
-	}
-	//neue höhe größer als alte: zeilen hinzufügen
-	else if (newHeight > height)
-	{
-		for (unsigned int i = height - 1; i < newHeight; i++)
-		{
-			//dyn Array auf betroffenen Zeile wird hinzugefügt
-			//matrix[i] = new float[width];
-			matrix[i] = (float *)calloc(width, sizeof(float));
-		}
-		height = newHeight;
-	}
+	height = newHeight;//neu
 
 	return 1;
 }
@@ -166,4 +145,25 @@ std::string Primitive_Matrix::ToString()
 	}
 
 	return s;
+}
+
+#include <iostream>
+
+int main()
+{
+	float t0[3] = { 0, 1, 2 };
+	float t1[3] = { 3, 4, 5 };
+	float t2[3] = { 6, 7, 8 };
+
+	float **test = new float*[3];
+	test[0] = t0;
+	test[1] = t1;
+	test[2] = t2;
+
+	Primitive_Matrix mtrTest = Primitive_Matrix(test, 3, 3);
+	std::cout << mtrTest.ToString();
+
+	mtrTest.ChangeSize(2, 2);
+	std::cout << mtrTest.ToString();
+
 }
