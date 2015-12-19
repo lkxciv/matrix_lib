@@ -35,6 +35,12 @@ public:
 	//Zu string
 	std::string ToString();
 
+	//Ändert wert in Feld, bei 0 beginnen!
+	bool SetValue(unsigned int y, unsigned int x, float value);
+
+	//Returnt wert in Feld, bei 0 beginnen!
+	float GetValue(unsigned int y, unsigned int x);
+
 };
 
 Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
@@ -147,6 +153,28 @@ std::string Primitive_Matrix::ToString()
 	return s;
 }
 
+bool Primitive_Matrix::SetValue(unsigned int y, unsigned int x, float value)
+{
+	if (y >= 0 && y < height && x >= 0 && x < width)
+	{
+		matrix[y][x] = value;
+
+		return 1;
+	}
+
+	return 0;
+}
+
+float Primitive_Matrix::GetValue(unsigned int y, unsigned int x)
+{
+	if (y >= 0 && y < height && x >= 0 && x < width)
+	{
+		return matrix[y][x];
+	}
+
+	return NAN;
+}
+
 #include <iostream>
 
 int main()
@@ -166,4 +194,6 @@ int main()
 	mtrTest.ChangeSize(2, 2);
 	std::cout << mtrTest.ToString();
 
+	mtrTest.SetValue(0, 0, 9);
+	std::cout << mtrTest.GetValue(0, 0);
 }
