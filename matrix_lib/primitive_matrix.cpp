@@ -205,9 +205,6 @@ public:
 	//Returnt direkt von Normalform zu Ergebnisform
 	LGS RRef();
 
-	//Returnt String des LGS
-	std::string ToString();
-
 	//Prüft, ob lösung des LGS Punkt entspricht, LGS muss in RREf Form vorliegen
 	bool IsSolutionPoint();
 
@@ -304,24 +301,6 @@ LGS LGS::RRef()
 	Solved = Ref();
 	Solved = OnlyRRef();
 	return Solved;
-}
-
-//Returnt String des LGS
-std::string LGS::ToString()
-{
-	std::string output = "";
-
-	for (int row = 0; row <= eqcount; row++)//Schleife Zeilen
-	{
-		output += "[ ";
-		for (int col = 0; col <= varcount; col++)//Schleife Spalten in einer Zeile
-		{
-			output += (std::to_string(matrix[row][col]) + " ");
-		}
-		output += "]\n";
-	}
-
-	return output;
 }
 
 bool LGS::IsSolutionPoint()
