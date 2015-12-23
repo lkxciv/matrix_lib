@@ -189,6 +189,7 @@ private:
 	//lgs zu matrix
 	int varcount = 0; //Arbeitsvariable breite
 	int eqcount = 0; //Arbeitsvariable höhe
+	int solState = 0; //Todo: Lösungsstatus des LGS
 
 public:
 	//Kontruktor
