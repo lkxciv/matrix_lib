@@ -20,8 +20,14 @@ public:
 	//Kontrs. 2D dyn. Array
 	Primitive_Matrix(float **arr, unsigned int h, unsigned int w);
 
+	//Kopierkonstruktor
+	Primitive_Matrix(const Primitive_Matrix &copyof);
+
 	//Destruktor
 	~Primitive_Matrix();
+
+	//Zuweisungsoperator
+	Primitive_Matrix & operator=(const Primitive_Matrix & assign);
 
 	//Ändert Höhe
 	bool ChangeHeight(unsigned int newHeight);
@@ -46,6 +52,9 @@ public:
 
 	//Returnt Breite beginnt bei 1
 	unsigned int GetWidth() { return width; }
+
+	//Kopiert Object aus Parameter in Aufrufendes Object
+	void CopyFrom(const Primitive_Matrix &copyof);
 };
 
 Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
@@ -81,6 +90,24 @@ Primitive_Matrix::Primitive_Matrix(float **arr ,unsigned int h, unsigned int w)
 	}
 }
 
+//Daten kopieren
+Primitive_Matrix::Primitive_Matrix(const Primitive_Matrix & copyof)
+{
+	//höhe und breite zuweisen
+	height = copyof.height;
+	width = copyof.width;
+
+	//dyn. array aufspannen
+	matrix = (float **)calloc(height, sizeof(float *));
+	for (unsigned int i = 0; i < height; i++)
+	{
+		//matrix[i] = new float[width];
+		matrix[i] = (float *)calloc(width, sizeof(float));
+		//Gleichzeitiges Kopieren der Arrayzeilen
+		memcpy(matrix[i], copyof.matrix[i], width * sizeof(float));
+	}
+}
+
 Primitive_Matrix::~Primitive_Matrix()
 {
 	for (unsigned int i = 0; i < height; i++)
@@ -92,12 +119,19 @@ Primitive_Matrix::~Primitive_Matrix()
 	free(matrix);
 }
 
+Primitive_Matrix & Primitive_Matrix::operator=(const Primitive_Matrix & assign)
+{
+	this->CopyFrom(assign);
+
+	return *this;
+}
+
 bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 {
 	//neue Höhe kleiner als die alte -> floats, auf die matrix[i] zeigt müssen gelöscht werden
 	if (newHeight < height)
 	{
-		for (int i = height - 1; i >= newHeight; i--)
+		for (unsigned int i = height - 1; i >= newHeight; i--)
 		{
 			free(matrix[i]);
 		}
@@ -118,7 +152,7 @@ bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 	//floats, für die platz geschaffen werden muss
 	if (newHeight > height)
 	{
-		for (int i = height; i < newHeight; i++)
+		for (unsigned int i = height; i < newHeight; i++)
 		{
 			matrix[i] = (float *)calloc(width, sizeof(float));
 		}
@@ -199,7 +233,27 @@ float Primitive_Matrix::GetValue(unsigned int y, unsigned int x)
 	return NAN;
 }
 
-class LGS : Primitive_Matrix
+void Primitive_Matrix::CopyFrom(const Primitive_Matrix & copyof)
+{
+	//erstmal alles Löschen
+	this->~Primitive_Matrix();
+
+	//höhe und breite zuweisen
+	height = copyof.height;
+	width = copyof.width;
+
+	//dyn. array aufspannen
+	matrix = (float **)calloc(height, sizeof(float *));
+	for (unsigned int i = 0; i < height; i++)
+	{
+		//matrix[i] = new float[width];
+		matrix[i] = (float *)calloc(width, sizeof(float));
+		//Gleichzeitiges Kopieren der Arrayzeilen
+		memcpy(matrix[i], copyof.matrix[i], width * sizeof(float));
+	}
+}
+
+class LGS : public Primitive_Matrix
 {
 private:
 	//varsize zu GetWidth() - 1
@@ -207,14 +261,13 @@ private:
 	//lgs zu matrix
 	int varcount = 0; //Arbeitsvariable breite
 	int eqcount = 0; //Arbeitsvariable höhe
-	int solState = 0; //Todo: Lösungsstatus des LGS
 
 public:
 	//Kontruktor
 	LGS(unsigned int variable_num, unsigned int equation_num, float **matrix);
 	//Destruktor der Basisklasse wird automatisch aufgerufen
 
-	//Returnt gelöstes LGS in Stufenform
+	//Returnt gelöstes LGS in Stufenform (von LGS in Normalform)
 	LGS Ref();
 
 	//Returnt LGS in vollständig gelöster Version, MUSS mit LGS in REF Form aufgerufen werden
@@ -239,10 +292,9 @@ LGS::LGS(unsigned int variable_num, unsigned int equation_num, float ** matrix) 
 LGS LGS::Ref()
 {
 	int yzaehler; //Zaelvariable fuer berechnete Gleichungen
-								//int dgaenge; //Zaehlvariable für Rechendurchgaenge
 	int ypos = 0;//y Richtungsdurchlauf
-	int xpos = 0;//x Richtungsdurchlauf
-	int elimx = 0;//ist beginn der treppendurchlauefe in x richtung, zaehlt die eliminationsvorgaenge der variablen
+	unsigned int xpos = 0;//x Richtungsdurchlauf
+	unsigned int elimx = 0;//ist beginn der treppendurchlauefe in x richtung, zaehlt die eliminationsvorgaenge der variablen
 	int start_step = 0;//ist beginn der treppendurchlauefe in y richtung, bestimmt, ab welcher Gleichung weiter eliminiert wird
 	float puffer = 0;
 	LGS Lgs_ref((GetWidth() - 1), GetHeight(), matrix);//LGS, dass bearbeitet wird
@@ -297,7 +349,7 @@ LGS LGS::OnlyRRef()
 	//LGS wird diagonal abgefahren von Unten rechts nach oben links
 	for (xpos = (GetWidth() - 1) - 1; xpos >= 0; xpos--)
 	{
-		for (int varstep = xpos + 1; varstep < (GetWidth() - 1); varstep++)
+		for (unsigned int varstep = xpos + 1; varstep < (GetWidth() - 1); varstep++)
 		{
 			//Variable mit letztem Ergebnis multiplizieren, von Gleichungen subtrahieren
 			Lgs_rref.matrix[ypos][(GetWidth() - 1)] -= Lgs_rref.matrix[ypos][varstep] * Lgs_rref.matrix[varstep][(GetWidth() - 1)];
@@ -319,6 +371,7 @@ LGS LGS::RRef()
 	Solved = Ref();
 	Solved = OnlyRRef();
 	return Solved;
+
 }
 
 bool LGS::IsSolutionPoint()
@@ -329,7 +382,7 @@ bool LGS::IsSolutionPoint()
 		return 0;
 	}
 	//Diagonal abfahren
-	for (int i = 0; i < (GetWidth() - 1); i++)
+	for (unsigned int i = 0; i < (GetWidth() - 1); i++)
 	{
 		//Es sollte immer 1 dort sein
 		if (matrix[i][i] == 0)
@@ -346,7 +399,7 @@ float *LGS::GetSolution()
 	//Lösungsspeicher
 	float *sol = new float[(GetWidth() - 1)];
 	//Rechte Seite des LGS abfahren
-	for (int i = 0; i < (GetWidth() - 1); i++)
+	for (unsigned int i = 0; i < (GetWidth() - 1); i++)
 	{
 		sol[i] = matrix[(GetWidth() - 1)][i];
 	}
@@ -358,9 +411,9 @@ float *LGS::GetSolution()
 
 int main()
 {
-	float t0[3] = { 0, 1, 2 };
-	float t1[3] = { 3, 4, 5 };
-	float t2[3] = { 6, 7, 8 };
+	float t0[3] = { 1, 2, 3 };
+	float t1[3] = { 4, 5, 6 };
+	float t2[3] = { 7, 8, 9 };
 
 	//float **test = new float*[3]; //geht
 	float **test = (float **)calloc(3, sizeof(float *));
@@ -378,6 +431,14 @@ int main()
 	std::cout << mtrTest->GetValue(0, 0);
 
 	delete mtrTest;
+
+	//
+
+	LGS *lgsTest = new LGS(2, 3, test);
+	std::cout << lgsTest->ToString();
+
+	*lgsTest = lgsTest->RRef();
+	std::cout <<"/n"<< lgsTest->ToString();
 }
 
 
