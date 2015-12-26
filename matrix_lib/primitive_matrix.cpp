@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <iostream>//debugging und testen
+
 
 class Primitive_Matrix
 {
@@ -336,12 +338,13 @@ LGS LGS::OnlyRRef()
 	int xpos = 0;//x Richtungsdurchlauf
 	LGS Lgs_rref((GetWidth() - 1), GetHeight(), matrix);//matrix sollte in ref form sein
 
-																		 //Anfangs y-pos
+	//Anfang y-pos
 	if (GetHeight() > (GetWidth() - 1))
 	{
-		ypos = (GetWidth() - 1);
+		//Man hat Breite - 1 Variablen, Arrays beginen ab null -> -2
+		ypos = (GetWidth() - 2);
 	}
-	else if ((GetWidth() - 1) > GetHeight() || (GetWidth() - 1) == GetHeight())
+	else if ((GetWidth() - 1) >= GetHeight())
 	{
 		ypos = GetHeight() - 1;
 	}
@@ -354,6 +357,8 @@ LGS LGS::OnlyRRef()
 			//Variable mit letztem Ergebnis multiplizieren, von Gleichungen subtrahieren
 			Lgs_rref.matrix[ypos][(GetWidth() - 1)] -= Lgs_rref.matrix[ypos][varstep] * Lgs_rref.matrix[varstep][(GetWidth() - 1)];
 			Lgs_rref.matrix[ypos][varstep] = 0;
+
+			std::cout << varstep << " " << xpos << "\n" << ToString() << "\n";
 		}
 		//Gleichung durch Faktor von Var.
 		Lgs_rref.matrix[ypos][(GetWidth() - 1)] /= Lgs_rref.matrix[ypos][xpos];
@@ -407,8 +412,6 @@ float *LGS::GetSolution()
 	return sol;
 }
 
-#include <iostream>
-
 int main()
 {
 	float t0[3] = { 1, 2, 3 };
@@ -437,8 +440,11 @@ int main()
 	LGS *lgsTest = new LGS(2, 3, test);
 	std::cout << lgsTest->ToString();
 
-	*lgsTest = lgsTest->RRef();
-	std::cout <<"/n"<< lgsTest->ToString();
+	*lgsTest = lgsTest->Ref();
+	std::cout <<"\n"<< lgsTest->ToString();
+
+	*lgsTest = lgsTest->OnlyRRef();
+	std::cout << "\n" << lgsTest->ToString();
 }
 
 
