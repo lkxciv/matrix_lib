@@ -94,8 +94,17 @@ Primitive_Matrix::~Primitive_Matrix()
 
 bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 {
+	//neue Höhe kleiner als die alte -> floats, auf die matrix[i] zeigt müssen gelöscht werden
+	if (newHeight < height)
+	{
+		for (int i = height - 1; i >= newHeight; i--)
+		{
+			free(matrix[i]);
+		}
+	}
 	//höhen array realloc mit neuer höhe und überprüfung
-	//bei realloc wird mtrix automatisch deallocated, wenn nicht NULL
+	//bei realloc werden die zeiger, auf der "zeiger zeiger" matrix zeigt, automatisch gelöscht,
+	//jedoch NICHT die floats auf die die zeiger zeigen
 	float **temp = (float **)realloc(matrix, newHeight * sizeof(float *));
 	if (temp != NULL)
 	{
@@ -104,6 +113,15 @@ bool Primitive_Matrix::ChangeHeight(unsigned int newHeight)
 	else if (temp == NULL)
 	{
 		return 0;
+	}
+	//neu höhe größer als alte -> neue höhenzeigern matrix[i] zeigen auf
+	//floats, für die platz geschaffen werden muss
+	if (newHeight > height)
+	{
+		for (int i = height; i < newHeight; i++)
+		{
+			matrix[i] = (float *)calloc(width, sizeof(float));
+		}
 	}
 	height = newHeight;//neu
 
