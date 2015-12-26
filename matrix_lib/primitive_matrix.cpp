@@ -376,7 +376,6 @@ LGS LGS::RRef()
 	Solved = Ref();
 	Solved = OnlyRRef();
 	return Solved;
-
 }
 
 bool LGS::IsSolutionPoint()
