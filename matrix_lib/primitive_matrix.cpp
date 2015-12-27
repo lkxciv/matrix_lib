@@ -28,7 +28,7 @@ public:
 	//Destruktor
 	~Primitive_Matrix();
 
-	//Zuweisungsoperator
+	//Zuweisungsoperator, Object wird herüberkopiert
 	Primitive_Matrix & operator=(const Primitive_Matrix & assign);
 
 	//Ändert Höhe
@@ -444,6 +444,8 @@ int main()
 
 	*lgsTest = lgsTest->OnlyRRef();
 	std::cout << "\n" << lgsTest->ToString();
+
+	std::cout << "\n" << lgsTest->IsSolutionPoint();
 }
 
 
