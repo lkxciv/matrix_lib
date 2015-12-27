@@ -24,6 +24,9 @@
     <ClCompile Include="test.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="vect3d.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="primitive_matrix.h">
@@ -32,5 +35,11 @@
     <ClInclude Include="LGS.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="vect3d.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

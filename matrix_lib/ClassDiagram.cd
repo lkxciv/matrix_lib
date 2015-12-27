@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LGS">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <InheritanceLine Type="Primitive_Matrix" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="2.813" />
+        <Point X="6.25" Y="2.813" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AQAIAIAAAAAAAgAAAIACAAAAAAAAAAAAAAAAEAAAEAA=</HashCode>
+      <FileName>LGS.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Primitive_Matrix">
+    <Position X="2.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIEAAAiQEQAAAACBEKAAAAAAAAAAgAEAIAAA=</HashCode>
+      <FileName>primitive_matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Line3d">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAACAAEAAAAAIAAAAAAAHAAAEAIAAAAAAA=</HashCode>
+      <FileName>test.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vect3d">
+    <Position X="10" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAEIgAAAUAAAAAQACAIAEKgAQAAAAY=</HashCode>
+      <FileName>vect3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
