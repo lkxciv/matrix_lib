@@ -50,7 +50,7 @@ Vect3d Vect3d::ProjectOn(Vect3d v2)
 }
 
 //Berechnet Vektorbetrag
-float Vect3d::AbsV()
+float Vect3d::AbsV() const
 {
 	return(sqrt(vect[0] * vect[0] + vect[1] * vect[1] + vect[2] * vect[1]));
 
@@ -197,7 +197,7 @@ Vect3d Vect3d::operator*=(float skalar)
 }
 
 //Überladung division mit skalar
-Vect3d Vect3d::operator/(float skalar)
+Vect3d Vect3d::operator/(float skalar) const
 {
 	Vect3d res;
 	for (int i = 0; i <= 2; i++)

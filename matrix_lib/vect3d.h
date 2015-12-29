@@ -27,7 +27,7 @@ public:
 	Vect3d ProjectOn(Vect3d v2);
 
 	//Berechnet Vektorbetrag
-	float AbsV();
+	float AbsV() const;
 
 	//Berechnet Skalarprodukt
 	static float DotP(Vect3d v1, Vect3d v2);
@@ -69,7 +69,7 @@ public:
 	Vect3d operator*=(float skalar);
 
 	//Überladung division mit skalar
-	Vect3d operator/(float skalar);
+	Vect3d operator/(float skalar) const;
 
 	//Überladung division mit skalar
 	Vect3d operator/=(float skalar);

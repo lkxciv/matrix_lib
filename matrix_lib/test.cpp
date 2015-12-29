@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <cmath>
 
 class Line3d
 {
@@ -28,6 +29,12 @@ public:
 
 	//Gibt Punkt auf Gerade mit parameter zurück
 	Vect3d GetPoint(float param) const;
+
+	//Gibt Minimale Distanz von Gerade zu Pnkt zurück -> GP
+	float MinDistGP(Vect3d point) const;
+
+	//Gibt Minimale Distanz von Gerade Gerade zurück -> GG
+	static float MinDistGG(const Line3d & g1, const Line3d & g2);
 };
 
 //methodendefinitionen von Line3d
@@ -83,6 +90,21 @@ Vect3d Line3d::GetPoint(float param) const
 	return pV + rV * param;
 }
 
+float Line3d::MinDistGP(Vect3d point) const
+{
+	//Parallelogramm durch Länge -> Rechteckhöhe
+	//|po x v| / |v|
+	return ((Vect3d::CrossP((pV - point), rV)).AbsV() / rV.AbsV());
+}
+
+float Line3d::MinDistGG(const Line3d & g1, const Line3d & g2)
+{
+	//Polytopsvolumen / Fläche Parallelogram v1 und v2
+	//|o1o2 * (v1 x v2)| / |v1 x v2|
+	Vect3d v1xv2 = Vect3d::CrossP(g2.rV, g1.rV);
+	return ( abs(Vect3d::DotP((g2.pV - g1.pV), v1xv2)) / (v1xv2.AbsV()) );
+}
+
 Vect3d Line3d::GetIntersect(const Line3d & g1, const Line3d & g2, bool & intersect)
 {
 	//Abfrage unendlich oder keine Schnittpunkte
@@ -97,6 +119,7 @@ Vect3d Line3d::GetIntersect(const Line3d & g1, const Line3d & g2, bool & interse
 		return Vect3d();
 	}
 
+	//**array erzeugen für LGS kontruktor
 	float temp0[3] = { g1.rV.vect[0], -1 * g2.rV.vect[0], g2.pV.vect[0] - g1.pV.vect[0] };
 	float temp1[3] = { g1.rV.vect[1], -1 * g2.rV.vect[1], g2.pV.vect[1] - g1.pV.vect[1] };
 	float temp2[3] = { g1.rV.vect[2], -1 * g2.rV.vect[2], g2.pV.vect[2] - g1.pV.vect[2] };
@@ -148,6 +171,55 @@ Vect3d Line3d::GetIntersect(const Line3d & g1, const Line3d & g2, bool & interse
 	}
 }
 
+class Plane3d
+{
+private:
+	//Spannvektoren und Normalenvektor
+	Vect3d r1, r2, n;
+
+	//Parameterform -> Normalenform aktualisieren
+	void ParamToNormal();
+
+	//Normalenform -> Parameterform aktualisieren
+	void NormalToParam();
+
+public:
+	//Stützvektor
+	Vect3d oV;
+
+	//Konstruktor Normalenform(Stützvektor, Normalenvektor)
+	Plane3d(Vect3d oV, Vect3d n);
+
+	//Konstruktor Parameterform(Stützvektor, Spannvektoren)
+	Plane3d(Vect3d oV, Vect3d r1, Vect3d r2);
+};
+
+void Plane3d::ParamToNormal()
+{
+	n = Vect3d::CrossP(r1, r2);
+}
+
+void Plane3d::NormalToParam()
+{
+	r1 = Vect3d(1, 0, -(n.vect[0] / n.vect[2]));
+	r2 = Vect3d(0, 1, -(n.vect[1] / n.vect[2]));
+}
+
+Plane3d::Plane3d(Vect3d oV, Vect3d n)
+{
+	this->oV = oV;
+	this->n = n;
+	NormalToParam();
+}
+
+Plane3d::Plane3d(Vect3d oV, Vect3d r1, Vect3d r2)
+{
+	this->oV = oV;
+	this->r1 = r1;
+	this->r2 = r2;
+	ParamToNormal();
+}
+
 int main()
 {
 	float t0[3] = { 1, 2, 3 };
@@ -194,3 +266,5 @@ int main()
 
 	std::cout <<"\n"<< res.ToString();
 }
+
+
