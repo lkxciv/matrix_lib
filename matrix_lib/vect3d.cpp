@@ -20,6 +20,15 @@ Vect3d::Vect3d(float x, float y, float z)
 	vect[2] = z;
 }
 
+Vect3d::Vect3d(Vect3d p1, Vect3d p2)
+{
+	for (int i = 0; i <= 2; i++)
+	{
+		//p1p2 = p2 - p1
+		this->vect[i] = p2.vect[i] - p1.vect[i];
+	}
+}
+
 Vect3d::~Vect3d()
 {
 }
@@ -40,13 +49,13 @@ float Vect3d::Volume(Vect3d v1, Vect3d v2, Vect3d v3)
 //Berechnet betrag von Projektion auf v2
 float Vect3d::AbsProjectOn(Vect3d v2)
 {
-	return(DotP(*this, v2) / (*this).AbsV());
+	return(DotP(*this, v2) / v2.AbsV());
 }
 
-//Berechnet Vektor von Projetion auf v2
+//Berechnet Vektor von Projektion auf v2
 Vect3d Vect3d::ProjectOn(Vect3d v2)
 {
-	return(v2 * ((*this).AbsProjectOn(v2) * (*this).AbsV()));
+	return((v2 / v2.AbsV()) * this->AbsProjectOn(v2)) ;
 }
 
 //Berechnet Vektorbetrag

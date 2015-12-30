@@ -11,6 +11,9 @@ public:
 
 	Vect3d(float x, float y, float z);
 
+	//Kontruktor für Vektor p1p2 von p1 zu p2
+	Vect3d(Vect3d p1, Vect3d p2);
+
 	~Vect3d();
 
 	//Berechnet den Flächeninhalt des aufgespannten Spats

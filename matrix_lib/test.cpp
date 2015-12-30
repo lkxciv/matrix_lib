@@ -192,6 +192,12 @@ public:
 
 	//Konstruktor Parameterform(Stützvektor, Spannvektoren)
 	Plane3d(Vect3d oV, Vect3d r1, Vect3d r2);
+
+	//Mindestabstand Ebene Punkt
+	float MinDistEP(Vect3d point) const;
+
+	//Mindestabstand Zweier Ebenen
+	float MinDistEE(Plane3d & e2) const;
 };
 
 void Plane3d::ParamToNormal()
@@ -218,6 +224,31 @@ Plane3d::Plane3d(Vect3d oV, Vect3d r1, Vect3d r2)
 	this->r1 = r1;
 	this->r2 = r2;
 	ParamToNormal();
+}
+
+//Abstand Ist Betrag von Abbildung 
+//von Vektor PO auf n
+float Plane3d::MinDistEP(Vect3d point) const
+{
+	return Vect3d(point, oV).AbsProjectOn(n);
+}
+
+float Plane3d::MinDistEE(Plane3d & e2) const
+{
+	//Auf Linearabhängigkeit prüfen
+	if (!Vect3d::LinDep(this->n, e2.n))
+	{
+		return 0;
+	}
+	else
+	{
+		return this->MinDistEP(e2.oV);
+	}
+}
+
+Vect3d IntersectEG(Plane3d & e, Line3d & g)
+{
+	//todo
 }
 
 int main()
