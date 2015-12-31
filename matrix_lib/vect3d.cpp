@@ -47,13 +47,13 @@ float Vect3d::Volume(Vect3d v1, Vect3d v2, Vect3d v3)
 }
 
 //Berechnet betrag von Projektion auf v2
-float Vect3d::AbsProjectOn(Vect3d v2)
+float Vect3d::AbsProjectOn(Vect3d v2) const
 {
 	return(DotP(*this, v2) / v2.AbsV());
 }
 
 //Berechnet Vektor von Projektion auf v2
-Vect3d Vect3d::ProjectOn(Vect3d v2)
+Vect3d Vect3d::ProjectOn(Vect3d v2) const
 {
 	return((v2 / v2.AbsV()) * this->AbsProjectOn(v2)) ;
 }
@@ -84,7 +84,7 @@ Vect3d Vect3d::CrossP(Vect3d v1, Vect3d v2)
 }
 
 //Vektor wird als String ausgegeben
-std::string Vect3d::ToString()
+std::string Vect3d::ToString() const
 {
 	std::ostringstream oss;
 	std::string sR = "{";

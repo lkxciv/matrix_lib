@@ -24,10 +24,10 @@ public:
 	static float Volume(Vect3d v1, Vect3d v2, Vect3d v3);
 
 	//Berechnet betrag von Projektion auf v2
-	float AbsProjectOn(Vect3d v2);
+	float AbsProjectOn(Vect3d v2) const;
 
 	//Berechnet Vektor von Projetion auf v2
-	Vect3d ProjectOn(Vect3d v2);
+	Vect3d ProjectOn(Vect3d v2) const;
 
 	//Berechnet Vektorbetrag
 	float AbsV() const;
@@ -39,7 +39,7 @@ public:
 	static Vect3d CrossP(Vect3d v1, Vect3d v2);
 
 	//Vektor wird als String ausgegeben
-	std::string ToString();
+	std::string ToString() const;
 
 	//Prüft Linearabhängigkeit
 	static bool LinDep(Vect3d v1, Vect3d v2);

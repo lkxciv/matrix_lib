@@ -19,7 +19,7 @@ public:
 	//Prüft Parallelität der Geraden
 	static bool IsParallel(const Line3d & g1, const Line3d & g2);
 
-	static float Angle(const Line3d & g1, const Line3d & g2);
+	static double Angle(const Line3d & g1, const Line3d & g2);
 
 	//Prüft, ob zwei Geraden Identisch sind
 	static bool IsIdentical(const Line3d & g1, const Line3d & g2);
@@ -35,6 +35,9 @@ public:
 
 	//Gibt Minimale Distanz von Gerade Gerade zurück -> GG
 	static float MinDistGG(const Line3d & g1, const Line3d & g2);
+
+	//Gerade zu String
+	std::string ToString() const;
 };
 
 //methodendefinitionen von Line3d
@@ -55,7 +58,7 @@ bool Line3d::IsParallel(const Line3d & g1, const Line3d & g2)
 	return(Vect3d::LinDep(g1.rV, g2.rV));
 }
 
-float Line3d::Angle(const Line3d & g1, const Line3d & g2)
+double Line3d::Angle(const Line3d & g1, const Line3d & g2)
 {
 	return(Vect3d::AngleAbs(g1.rV, g2.rV));
 }
@@ -79,10 +82,8 @@ bool Line3d::IsIdentical(const Line3d & g1, const Line3d & g2)
 			return 1;
 		}
 	}
-	else
-	{
-		return 0;
-	}
+	
+	return 0;
 }
 
 Vect3d Line3d::GetPoint(float param) const
@@ -103,6 +104,11 @@ float Line3d::MinDistGG(const Line3d & g1, const Line3d & g2)
 	//|o1o2 * (v1 x v2)| / |v1 x v2|
 	Vect3d v1xv2 = Vect3d::CrossP(g2.rV, g1.rV);
 	return ( abs(Vect3d::DotP((g2.pV - g1.pV), v1xv2)) / (v1xv2.AbsV()) );
+}
+
+std::string Line3d::ToString() const
+{
+	return pV.ToString() + " + r * " + rV.ToString();
 }
 
 Vect3d Line3d::GetIntersect(const Line3d & g1, const Line3d & g2, bool & intersect)
@@ -209,6 +215,23 @@ public:
 
 	//Schnittgerade zweier Ebenen ohne Überprüfung
 	static Line3d IntersectEE(Plane3d & e1, Plane3d & e2);
+
+	//Setter
+	void SetN(Vect3d v);
+	void SetR1(Vect3d v);
+	void SetR2(Vect3d v);
+
+	//Parameterform zu String
+	std::string ToStringParam() const;
+
+	//Normalenform zu String
+	std::string ToStringNormal() const;
+
+	//Winkel EE
+	static double Angle(Plane3d & e1, Plane3d & e2);
+
+	//Winkel EG
+	static double Angle(Plane3d & e, Line3d & g);
 };
 
 void Plane3d::ParamToNormal()
@@ -272,6 +295,34 @@ Line3d Plane3d::IntersectEE(Plane3d & e1, Plane3d & e2)
 	
 	//Schnittpkts zu Gerade
 	return Line3d(p1, Vect3d(p1, p2));
+}
+
+void Plane3d::SetN(Vect3d v)
+{
+	n = v;
+	NormalToParam();
+}
+
+void Plane3d::SetR1(Vect3d v)
+{
+	r1 = v;
+	ParamToNormal();
+}
+
+void Plane3d::SetR2(Vect3d v)
+{
+	r2 = v;
+	ParamToNormal();
+}
+
+std::string Plane3d::ToStringParam() const
+{
+	return oV.ToString() + " + r * " + r1.ToString() + " + s * " + r2.ToString();
+}
+
+std::string Plane3d::ToStringNormal() const
+{
+	return "(x - " + oV.ToString() + ") * " + n.ToString() + " = 0";
 }
 
 int main()
