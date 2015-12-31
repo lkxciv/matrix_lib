@@ -198,6 +198,17 @@ public:
 
 	//Mindestabstand Zweier Ebenen
 	float MinDistEE(Plane3d & e2) const;
+
+	//Vektoren auslesen
+	Vect3d GetN() const { return n; }
+	Vect3d GetR1() const { return r1; }
+	Vect3d GetR2() const { return r2; }
+
+	//Schnittpunkt Ebene-Gerade ohne Überprüfung
+	static Vect3d IntersectEG(Plane3d & e, Line3d & g);
+
+	//Schnittgerade zweier Ebenen ohne Überprüfung
+	static Line3d IntersectEE(Plane3d & e1, Plane3d & e2);
 };
 
 void Plane3d::ParamToNormal()
@@ -246,9 +257,21 @@ float Plane3d::MinDistEE(Plane3d & e2) const
 	}
 }
 
-Vect3d IntersectEG(Plane3d & e, Line3d & g)
+Vect3d Plane3d::IntersectEG(Plane3d & e, Line3d & g)
 {
-	//todo
+	//Parameter berechen und in Gerade Einsetzen
+	return (g.GetPoint((Vect3d::DotP(e.oV, e.GetN()) - Vect3d::DotP(e.GetN(), g.pV)) / Vect3d::DotP(e.GetN(), g.rV)));
+}
+
+Line3d Plane3d::IntersectEE(Plane3d & e1, Plane3d & e2)
+{
+	//Ebene1 wird in zwei spann geraden aufgeteilt,
+	//deren Schnittpunkte mit E2 eine Gerade ergeben
+	Vect3d p1 = IntersectEG(e2, Line3d(e1.oV, e1.r1));
+	Vect3d p2 = IntersectEG(e2, Line3d(e1.oV, e1.r2));
+	
+	//Schnittpkts zu Gerade
+	return Line3d(p1, Vect3d(p1, p2));
 }
 
 int main()
