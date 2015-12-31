@@ -129,6 +129,11 @@ double Vect3d::AngleAbs(Vect3d v1, Vect3d v2)
 	return(acos(abs(DotP(v1, v2)) / (v1.AbsV() * v2.AbsV()) * 180 / PI));
 }
 
+double Vect3d::AngleAbsNormal(Vect3d v1, Vect3d v2)
+{
+	return(asin(abs(DotP(v1, v2)) / (v1.AbsV() * v2.AbsV()) * 180 / PI));
+}
+
 //Berechnet Einheitsvektor, ist static
 Vect3d Vect3d::UnitV(Vect3d v1)
 {

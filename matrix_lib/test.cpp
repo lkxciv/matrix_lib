@@ -202,6 +202,9 @@ public:
 	//Mindestabstand Ebene Punkt
 	float MinDistEP(Vect3d point) const;
 
+	//Mindestabstand Ebene Gerade
+	float MinDistEG(Line3d & g) const;
+
 	//Mindestabstand Zweier Ebenen
 	float MinDistEE(Plane3d & e2) const;
 
@@ -267,6 +270,19 @@ float Plane3d::MinDistEP(Vect3d point) const
 	return Vect3d(point, oV).AbsProjectOn(n);
 }
 
+float Plane3d::MinDistEG(Line3d & g) const
+{
+	//Überprüfung ob G parrallel zu E
+	if (Vect3d::DotP(n, g.rV) != 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return this->MinDistEP(g.pV);
+	}
+}
+
 float Plane3d::MinDistEE(Plane3d & e2) const
 {
 	//Auf Linearabhängigkeit prüfen
@@ -323,6 +339,16 @@ std::string Plane3d::ToStringParam() const
 std::string Plane3d::ToStringNormal() const
 {
 	return "(x - " + oV.ToString() + ") * " + n.ToString() + " = 0";
+}
+
+double Plane3d::Angle(Plane3d & e1, Plane3d & e2)
+{
+	return Vect3d::AngleAbs(e1.n, e2.n);
+}
+
+double Plane3d::Angle(Plane3d & e, Line3d & g)
+{
+	return Vect3d::AngleAbsNormal(e.n, g.rV);
 }
 
 int main()

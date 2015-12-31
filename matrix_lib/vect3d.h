@@ -50,6 +50,9 @@ public:
 	//Berechnet Winkel zw. 2 Vektoren mit Betrag im Zähler für Objekte
 	static double AngleAbs(Vect3d v1, Vect3d v2);
 
+	//Berechnet Winkel zwischen Vektor und Normalenvektor mit Betrag für Objekte
+	static double AngleAbsNormal(Vect3d v1, Vect3d v2);
+
 	//Berechnet Einheitsvektor
 	static Vect3d UnitV(Vect3d v1);
 
