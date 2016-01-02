@@ -13,6 +13,9 @@ private:
 	int eqcount = 0; //Arbeitsvariable höhe
 
 public:
+	//Standardkonstr.
+	LGS();
+
 	//Konstruktor
 	LGS(unsigned int variable_num, unsigned int equation_num, float **matrix);
 	//Destruktor der Basisklasse wird automatisch aufgerufen
