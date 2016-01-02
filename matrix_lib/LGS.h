@@ -13,9 +13,12 @@ private:
 	int eqcount = 0; //Arbeitsvariable höhe
 
 public:
-	//Kontruktor
+	//Konstruktor
 	LGS(unsigned int variable_num, unsigned int equation_num, float **matrix);
 	//Destruktor der Basisklasse wird automatisch aufgerufen
+
+	//Kopierkonstruktor
+	LGS(const LGS & copyof);
 
 	//Returnt gelöstes LGS in Stufenform (von LGS in Normalform)
 	LGS Ref();

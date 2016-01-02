@@ -5,6 +5,11 @@
 
 
 
+Primitive_Matrix::Primitive_Matrix()
+{
+	matrix = nullptr;
+}
+
 Primitive_Matrix::Primitive_Matrix(unsigned int h, unsigned int w)
 {
 	//höhe und breite zuweisen
@@ -56,6 +61,15 @@ Primitive_Matrix::Primitive_Matrix(const Primitive_Matrix & copyof)
 	}
 }
 
+Primitive_Matrix::Primitive_Matrix(Primitive_Matrix && temp)
+{
+	this->height = temp.height;
+	this->width = temp.width;
+	this->matrix = temp.matrix;
+
+	temp.matrix = nullptr;
+}
+
 Primitive_Matrix::~Primitive_Matrix()
 {
 	for (unsigned int i = 0; i < height; i++)
@@ -70,6 +84,20 @@ Primitive_Matrix::~Primitive_Matrix()
 Primitive_Matrix & Primitive_Matrix::operator=(const Primitive_Matrix & assign)
 {
 	this->CopyFrom(assign);
+
+	return *this;
+}
+
+Primitive_Matrix & Primitive_Matrix::operator=(Primitive_Matrix && temp)
+{
+	if (this != &temp)
+	{
+		this->height = temp.height;
+		this->width = temp.width;
+		this->matrix = temp.matrix;
+
+		temp.matrix = nullptr;
+	}
 
 	return *this;
 }
@@ -198,6 +226,18 @@ void Primitive_Matrix::CopyFrom(const Primitive_Matrix & copyof)
 		matrix[i] = (float *)calloc(width, sizeof(float));
 		//Gleichzeitiges Kopieren der Arrayzeilen
 		memcpy(matrix[i], copyof.matrix[i], width * sizeof(float));
+	}
+}
+
+void Primitive_Matrix::MoveFrom(Primitive_Matrix && temp)
+{
+	if (this != &temp)
+	{
+		this->height = temp.height;
+		this->width = temp.width;
+		this->matrix = temp.matrix;
+
+		temp.matrix = nullptr;
 	}
 }
 

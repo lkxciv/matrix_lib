@@ -1,8 +1,8 @@
 #include "LGS.h"
 
-LGS::LGS(unsigned int variable_num, unsigned int equation_num, float ** matrix) : Primitive_Matrix(matrix, equation_num, (variable_num + 1))
-{
-}
+LGS::LGS(unsigned int variable_num, unsigned int equation_num, float ** matrix) : Primitive_Matrix(matrix, equation_num, (variable_num + 1)) {}
+
+LGS::LGS(const LGS & copyof) : Primitive_Matrix(copyof) {}
 
 //Returnt gelöstes LGS in Stufenform
 LGS LGS::Ref()

@@ -15,20 +15,29 @@ private:
 	unsigned int width = 0;
 
 public:
+	//Standardkonstruktor
+	Primitive_Matrix();
+
 	//Konstr. Höhe und Breite
 	Primitive_Matrix(unsigned int h, unsigned int w);
 
 	//Kontrs. 2D dyn. Array
 	Primitive_Matrix(float **arr, unsigned int h, unsigned int w);
 
-	//Kopierkonstruktor
-	Primitive_Matrix(const Primitive_Matrix &copyof);
+	//Kopierkonstruktor (default, da sonst Move vorgezogen wird)
+	Primitive_Matrix(const Primitive_Matrix & copyof);
+
+	//Move Konstruktor für rvalues (Temporäre Werte)
+	Primitive_Matrix(Primitive_Matrix && temp);
 
 	//Destruktor
 	~Primitive_Matrix();
 
 	//Zuweisungsoperator, Object wird herüberkopiert
 	Primitive_Matrix & operator=(const Primitive_Matrix & assign);
+
+	//Zuweisungsoperator rvalues
+	Primitive_Matrix & operator=(Primitive_Matrix && temp);
 
 	//Ändert Höhe
 	bool ChangeHeight(unsigned int newHeight);
@@ -55,7 +64,10 @@ public:
 	unsigned int GetWidth() { return width; }
 
 	//Kopiert Object aus Parameter in Aufrufendes Object
-	void CopyFrom(const Primitive_Matrix &copyof);
+	void CopyFrom(const Primitive_Matrix & copyof);
+
+	//Move Methode für rvalues, da in vererbeten Klassen Move Konstruktor nicht geht
+	void MoveFrom(Primitive_Matrix && temp);
 };
 
 #endif
