@@ -396,6 +396,9 @@ int main()
 	Vect3d res = Vect3d::UnitV(v1);
 
 	std::cout <<"\n"<< res.ToString();
+
+	Plane3d tstplane = Plane3d(v1, v2);
+	Line3d tstline = Line3d(v1, v2);
 }
 
 
