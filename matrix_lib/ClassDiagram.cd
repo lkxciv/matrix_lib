@@ -22,13 +22,6 @@
       <FileName>primitive_matrix.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Line3d">
-    <Position X="4.5" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAACAAEAAAAAIAAAAAEAHAAAEAIAAAAAAA=</HashCode>
-      <FileName>test.cpp</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Vect3d">
     <Position X="4.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
@@ -37,10 +30,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Plane3d">
-    <Position X="4.5" Y="10.5" Width="2" />
+    <Position X="9" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAQBAAAAQACAAQAAAAoAAMEAQAQAEAAY=</HashCode>
-      <FileName>test.cpp</FileName>
+      <FileName>Plane3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Line3d">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAACAAEAAAAAIAAAAAEAHAAAEAIAAAAAAA=</HashCode>
+      <FileName>Line3d.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

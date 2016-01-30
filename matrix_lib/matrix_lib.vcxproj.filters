@@ -27,6 +27,12 @@
     <ClCompile Include="vect3d.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Line3d.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane3d.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="primitive_matrix.h">
@@ -36,6 +42,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="vect3d.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Line3d.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane3d.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

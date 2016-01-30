@@ -119,12 +119,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LGS.cpp" />
+    <ClCompile Include="Line3d.cpp" />
+    <ClCompile Include="Plane3d.cpp" />
     <ClCompile Include="primitive_matrix.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="vect3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LGS.h" />
+    <ClInclude Include="Line3d.h" />
+    <ClInclude Include="Plane3d.h" />
     <ClInclude Include="primitive_matrix.h" />
     <ClInclude Include="vect3d.h" />
   </ItemGroup>
