@@ -8,6 +8,56 @@
 #include <string>
 #include <cmath>
 
+class Matrix : public Primitive_Matrix
+{
+public:
+	//fehler -> err = 1, muss manuell auf 0 gesetzt werden
+	bool err = 0;
+
+	//Konstruktor ohne matrix
+	Matrix(unsigned int row_num, unsigned int col_num);
+	//Destruktor der Basisklasse wird automatisch aufgerufen
+
+	//Konstruktor, bei dem Matrix rüberkopiert wird
+	Matrix(unsigned int row_num, unsigned int col_num, float **matrix);
+
+	//Kopierkonstruktor
+	Matrix(const Matrix & copyof);
+
+	float get(unsigned int row, unsigned int col);
+
+	void set(unsigned int row, unsigned int col, float value);
+
+	//operatoren
+	//Matrix operator+(Matrix m2);
+};
+
+Matrix::Matrix(unsigned int row_num, unsigned int col_num) : Primitive_Matrix(row_num, col_num){}
+
+Matrix::Matrix(unsigned int row_num, unsigned int col_num, float ** matrix) : Primitive_Matrix(matrix, row_num, col_num){}
+
+Matrix::Matrix(const Matrix & copyof) : Primitive_Matrix(copyof){}
+
+float Matrix::get(unsigned int row, unsigned int col)
+{
+	return matrix[row][col];
+}
+
+void Matrix::set(unsigned int row, unsigned int col, float value)
+{
+	matrix[row][col] = value;
+}
+
+/*Matrix Matrix::operator+(Matrix m2)
+{
+	if (GetHeight() == m2.GetHeight() && GetWidth() == m2.GetWidth())
+	{
+
+	}
+}*/
+
+
+
 int main()
 {
 	float t0[3] = { 1, 2, 3 };
@@ -56,6 +106,10 @@ int main()
 
 	Plane3d tstplane = Plane3d(v1, v2);
 	Line3d tstline = Line3d(v1, v2);
-}
 
+	//
+
+	Primitive_Matrix *prmtest = new Primitive_Matrix(2, 2);
+	delete [] prmtest;
+}
 

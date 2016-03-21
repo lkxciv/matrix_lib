@@ -92,6 +92,8 @@ Primitive_Matrix & Primitive_Matrix::operator=(Primitive_Matrix && temp)
 {
 	if (this != &temp)
 	{
+		delete this; //changed
+
 		this->height = temp.height;
 		this->width = temp.width;
 		this->matrix = temp.matrix;

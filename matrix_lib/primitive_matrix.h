@@ -36,7 +36,7 @@ public:
 	//Zuweisungsoperator, Object wird herüberkopiert
 	Primitive_Matrix & operator=(const Primitive_Matrix & assign);
 
-	//Zuweisungsoperator rvalues
+	//Zuweisungsoperator rvalues / tempvalues
 	Primitive_Matrix & operator=(Primitive_Matrix && temp);
 
 	//Ändert Höhe
