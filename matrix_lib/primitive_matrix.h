@@ -58,10 +58,10 @@ public:
 	float GetValue(unsigned int y, unsigned int x);
 
 	//Returnt Höhe, beginnt bei 1
-	unsigned int GetHeight() { return height; }
+	unsigned int GetHeight() const { return height; }
 
 	//Returnt Breite beginnt bei 1
-	unsigned int GetWidth() { return width; }
+	unsigned int GetWidth() const { return width; }
 
 	//Kopiert Object aus Parameter in Aufrufendes Object
 	void CopyFrom(const Primitive_Matrix & copyof);

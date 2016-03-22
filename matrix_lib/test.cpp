@@ -14,6 +14,15 @@ public:
 	//fehler -> err = 1, muss manuell auf 0 gesetzt werden
 	bool err = 0;
 
+	//Konstruktoren übernehmen
+	using Primitive_Matrix::Primitive_Matrix;
+
+	//Destruktor übernehmen
+	using Primitive_Matrix::~Primitive_Matrix;
+
+	//Standardkonstruktor
+	/*Matrix();
+
 	//Konstruktor ohne matrix
 	Matrix(unsigned int row_num, unsigned int col_num);
 	//Destruktor der Basisklasse wird automatisch aufgerufen
@@ -22,23 +31,31 @@ public:
 	Matrix(unsigned int row_num, unsigned int col_num, float **matrix);
 
 	//Kopierkonstruktor
-	Matrix(const Matrix & copyof);
+	Matrix(const Matrix & copyof);*/
 
-	float get(unsigned int row, unsigned int col);
+	float get(unsigned int row, unsigned int col) const;
 
 	void set(unsigned int row, unsigned int col, float value);
 
 	//operatoren
-	//Matrix operator+(Matrix m2);
+
+	//Wiederverwenden
+	using Primitive_Matrix::operator=;
+
+	Matrix operator+(const Matrix & m2);
+
+	Matrix operator*(const Matrix & m2);
 };
+
+/*Matrix::Matrix() : Primitive_Matrix(){}
 
 Matrix::Matrix(unsigned int row_num, unsigned int col_num) : Primitive_Matrix(row_num, col_num){}
 
 Matrix::Matrix(unsigned int row_num, unsigned int col_num, float ** matrix) : Primitive_Matrix(matrix, row_num, col_num){}
 
-Matrix::Matrix(const Matrix & copyof) : Primitive_Matrix(copyof){}
+Matrix::Matrix(const Matrix & copyof) : Primitive_Matrix(copyof){}*/
 
-float Matrix::get(unsigned int row, unsigned int col)
+float Matrix::get(unsigned int row, unsigned int col) const
 {
 	return matrix[row][col];
 }
@@ -48,15 +65,53 @@ void Matrix::set(unsigned int row, unsigned int col, float value)
 	matrix[row][col] = value;
 }
 
-/*Matrix Matrix::operator+(Matrix m2)
+Matrix Matrix::operator+(const Matrix & m2)
 {
+	Matrix mres = Matrix(GetHeight(), GetWidth());
+	//Matrizen gleich groß -> alle Elemnte zusammen addieren
 	if (GetHeight() == m2.GetHeight() && GetWidth() == m2.GetWidth())
 	{
-
+		for (int r = 0; r < GetHeight(); r++)
+		{
+			for (int c = 0; c < GetWidth(); c++)
+			{
+				mres.set(r, c, this->get(r, c) + m2.get(r, c));
+			}
+		}
 	}
-}*/
+	//Wenn nicht, err flag 1
+	else
+	{
+		mres.err = 1;
+	}
+	//sollte wie rvalue behandelt werden
+	return mres;
+}
 
-
+Matrix Matrix::operator*(const Matrix & m2)
+{
+	Matrix mres = Matrix(this->GetHeight(), m2.GetWidth());
+	//breite m1 = höhe m2 ?
+	if (this->GetWidth() == m2.GetHeight())
+	{
+		for (int h = 0; h < this->GetHeight(); h++)
+		{
+			for (int b = 0; b < m2.GetWidth(); b++)
+			{
+				//skalarp
+				for (int i = 0; i < this->ChangeWidth(); i++)
+				{
+					mres.set(h, b, mres.get(h, b) + this->get(h, i) * m2.get(i, b));
+				}
+			}
+		}
+	}
+	//sonst err flag auf 1
+	else
+	{
+		mres.err = 1;
+	}
+}
 
 int main()
 {
@@ -109,7 +164,13 @@ int main()
 
 	//
 
-	Primitive_Matrix *prmtest = new Primitive_Matrix(2, 2);
-	delete [] prmtest;
+	Primitive_Matrix *prmtest = new Primitive_Matrix(2,2);
+	delete prmtest;
+
+	//
+
+	Matrix *mattest = new Matrix(2, 2);
+	delete mattest;
+
 }
 
