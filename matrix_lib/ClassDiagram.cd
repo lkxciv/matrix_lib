@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="LGS">
-    <Position X="0.5" Y="4.75" Width="1.75" />
+    <Position X="0.5" Y="5" Width="1.75" />
     <InheritanceLine Type="Primitive_Matrix" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="0.5" Y="1.312" />
         <Point X="0.26" Y="1.312" />
-        <Point X="0.26" Y="5.449" />
-        <Point X="0.5" Y="5.449" />
+        <Point X="0.26" Y="5.699" />
+        <Point X="0.5" Y="5.699" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -23,24 +23,31 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Vect3d">
-    <Position X="4.5" Y="0.5" Width="2.25" />
+    <Position X="5.75" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>CAAAAAAAAAAAAAAEIgAAAUAAAAAQACAIAEKoAQAAAAY=</HashCode>
       <FileName>vect3d.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Plane3d">
-    <Position X="9" Y="0.5" Width="2" />
+    <Position X="10" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAQBAAAAQACAAQAAAAoAAMEAQAQAEAAY=</HashCode>
       <FileName>Plane3d.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Line3d">
-    <Position X="7" Y="0.5" Width="1.5" />
+    <Position X="8.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAACAAEAAAAAIAAAAAEAHAAAEAIAAAAAAA=</HashCode>
       <FileName>Line3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix">
+    <Position X="3" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAQAQAAACAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>test.cpp</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

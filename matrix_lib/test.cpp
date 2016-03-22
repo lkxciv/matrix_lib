@@ -20,19 +20,6 @@ public:
 	//Destruktor übernehmen
 	using Primitive_Matrix::~Primitive_Matrix;
 
-	//Standardkonstruktor
-	/*Matrix();
-
-	//Konstruktor ohne matrix
-	Matrix(unsigned int row_num, unsigned int col_num);
-	//Destruktor der Basisklasse wird automatisch aufgerufen
-
-	//Konstruktor, bei dem Matrix rüberkopiert wird
-	Matrix(unsigned int row_num, unsigned int col_num, float **matrix);
-
-	//Kopierkonstruktor
-	Matrix(const Matrix & copyof);*/
-
 	float get(unsigned int row, unsigned int col) const;
 
 	void set(unsigned int row, unsigned int col, float value);
@@ -42,18 +29,18 @@ public:
 	//Wiederverwenden
 	using Primitive_Matrix::operator=;
 
-	Matrix operator+(const Matrix & m2);
+	Matrix operator+(const Matrix & m2) const;
 
-	Matrix operator*(const Matrix & m2);
+	Matrix operator*(const Matrix & m2) const;
+
+	Matrix operator*(const float f) const;
+
+	Matrix operator-(const Matrix & m2) const;
+
+	//funcs
+
+	Matrix transp(const Matrix & m2);
 };
-
-/*Matrix::Matrix() : Primitive_Matrix(){}
-
-Matrix::Matrix(unsigned int row_num, unsigned int col_num) : Primitive_Matrix(row_num, col_num){}
-
-Matrix::Matrix(unsigned int row_num, unsigned int col_num, float ** matrix) : Primitive_Matrix(matrix, row_num, col_num){}
-
-Matrix::Matrix(const Matrix & copyof) : Primitive_Matrix(copyof){}*/
 
 float Matrix::get(unsigned int row, unsigned int col) const
 {
@@ -65,15 +52,15 @@ void Matrix::set(unsigned int row, unsigned int col, float value)
 	matrix[row][col] = value;
 }
 
-Matrix Matrix::operator+(const Matrix & m2)
+Matrix Matrix::operator+(const Matrix & m2) const
 {
 	Matrix mres = Matrix(GetHeight(), GetWidth());
 	//Matrizen gleich groß -> alle Elemnte zusammen addieren
 	if (GetHeight() == m2.GetHeight() && GetWidth() == m2.GetWidth())
 	{
-		for (int r = 0; r < GetHeight(); r++)
+		for (unsigned int r = 0; r < GetHeight(); r++)
 		{
-			for (int c = 0; c < GetWidth(); c++)
+			for (unsigned int c = 0; c < GetWidth(); c++)
 			{
 				mres.set(r, c, this->get(r, c) + m2.get(r, c));
 			}
@@ -88,18 +75,18 @@ Matrix Matrix::operator+(const Matrix & m2)
 	return mres;
 }
 
-Matrix Matrix::operator*(const Matrix & m2)
+Matrix Matrix::operator*(const Matrix & m2) const
 {
 	Matrix mres = Matrix(this->GetHeight(), m2.GetWidth());
 	//breite m1 = höhe m2 ?
 	if (this->GetWidth() == m2.GetHeight())
 	{
-		for (int h = 0; h < this->GetHeight(); h++)
+		for (unsigned int h = 0; h < this->GetHeight(); h++)
 		{
-			for (int b = 0; b < m2.GetWidth(); b++)
+			for (unsigned int b = 0; b < m2.GetWidth(); b++)
 			{
 				//skalarp
-				for (int i = 0; i < this->ChangeWidth(); i++)
+				for (unsigned int i = 0; i < this->GetWidth(); i++)
 				{
 					mres.set(h, b, mres.get(h, b) + this->get(h, i) * m2.get(i, b));
 				}
@@ -111,6 +98,31 @@ Matrix Matrix::operator*(const Matrix & m2)
 	{
 		mres.err = 1;
 	}
+	return mres;
+}
+
+Matrix Matrix::operator*(const float scal) const
+{
+	//Kopie von Matrix verändern
+	Matrix mres = Matrix(GetHeight(), GetWidth());
+	for (unsigned int r = 0; r < GetHeight(); r++)
+	{
+		for (unsigned int c = 0; c < GetWidth(); c++)
+		{
+			mres.set(r, c, this->get(r, c) * scal);
+		}
+	}
+	return mres;
+}
+
+Matrix Matrix::operator-(const Matrix & m2) const 
+{
+	return *this + (m2 * -1);
+}
+
+Matrix Matrix::transp(const Matrix & m2)
+{
+	return Matrix();//todo
 }
 
 int main()
