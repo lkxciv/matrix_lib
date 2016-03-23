@@ -39,7 +39,7 @@ public:
 
 	//funcs
 
-	Matrix transp(const Matrix & m2);
+	Matrix transp();
 };
 
 float Matrix::get(unsigned int row, unsigned int col) const
@@ -120,9 +120,19 @@ Matrix Matrix::operator-(const Matrix & m2) const
 	return *this + (m2 * -1);
 }
 
-Matrix Matrix::transp(const Matrix & m2)
+Matrix Matrix::transp()
 {
-	return Matrix();//todo
+	//neue Matrix anders herum
+	Matrix mres = Matrix(GetWidth(), GetHeight());
+	for (unsigned int y = 0; y < GetHeight(); y++)
+	{
+		for (unsigned int x = 0; x < GetWidth(); x++)
+		{
+			//alle Werte vertauschen
+			mres.set(x, y, this->get(y, x));
+		}
+	}
+	return mres;
 }
 
 int main()
