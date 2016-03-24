@@ -72,13 +72,16 @@ Primitive_Matrix::Primitive_Matrix(Primitive_Matrix && temp)
 
 Primitive_Matrix::~Primitive_Matrix()
 {
-	for (unsigned int i = 0; i < height; i++)
+	if (matrix != NULL)
 	{
-		//dyn Array auf jeder Zeile wird gelöscht
-		//delete[] matrix[i];
-		free(matrix[i]);
+		for (unsigned int i = 0; i < height; i++)
+		{
+			//dyn Array auf jeder Zeile wird gelöscht
+			//delete[] matrix[i];
+			free(matrix[i]);
+		}
+		free(matrix);
 	}
-	free(matrix);
 }
 
 Primitive_Matrix & Primitive_Matrix::operator=(const Primitive_Matrix & assign)

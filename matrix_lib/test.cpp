@@ -147,7 +147,7 @@ int main()
 	test[1] = t1;
 	test[2] = t2;
 
-	Primitive_Matrix *mtrTest = new Primitive_Matrix(test, 3, 3);
+	/*Primitive_Matrix *mtrTest = new Primitive_Matrix(test, 3, 3);
 	std::cout << mtrTest->ToString();
 
 	mtrTest->ChangeSize(2, 2);
@@ -187,11 +187,13 @@ int main()
 	//
 
 	Primitive_Matrix *prmtest = new Primitive_Matrix(2,2);
-	delete prmtest;
+	delete prmtest;*/
 
 	//
 
-	Matrix *mattest = new Matrix(2, 2);
+	Matrix *mattest = new Matrix(test, 3, 3);
+	std::cout << mattest->ToString() << std::endl;
+	std::cout << mattest->transp().ToString();
 	delete mattest;
 
 }
