@@ -10,24 +10,26 @@
 
 class Matrix : public virtual Primitive_Matrix
 {
+	//virtual, falls Matrix vererbt, um Konflikte zu vermeiden
 private:
 	//Determinante 2x2 Matrix (nach Satz)
-	float det22();
+	float det22() const;
 
 	//Determinante 3x3 Matrix (Sarrus)
-	float det33();
+	float det33() const;
 
 	//Anzahl nullen in Spalte (ab 0!)
-	int zerosC(unsigned int c);
+	int zerosC(unsigned int c) const;
 
 	//Anzal nullen in Zeile (ab 0!)
-	int zerosR(unsigned int r);
+	int zerosR(unsigned int r) const;
+
+	//Rekursive determinantenberechnung nach Laplasschen Entwicklungssatz
+	float det_rek() const;
+
 public:
 	//fehler -> err = 1, muss manuell auf 0 gesetzt werden
 	bool err = 0;
-
-	//Rekursive determinantenberechnung nach Laplasschen Entwicklungssatz !!PRIVATE!!
-	float det_rek();
 
 	//Konstruktoren übernehmen
 	using Primitive_Matrix::Primitive_Matrix;
@@ -56,21 +58,30 @@ public:
 	//funcs
 
 	//transponieren
-	Matrix transp();
+	Matrix transp() const;
 
 	//true, wenn quadratische Matrix
-	bool isQuad();
+	bool isQuad() const;
 
 	//Liefert Untermatrix durch streichen der Zeile und Spalte
-	Matrix getSubMat(unsigned int rowy, unsigned int colx);
+	Matrix getSubMat(unsigned int rowy, unsigned int colx) const;
+
+	//Liefert determinante
+	float det() const;
+
+	//Liefert Unteradjunkte / Minor
+	float minor(unsigned int rowy, unsigned int colx) const;
+
+	//Zeilenmatrix aus Vectoren
+	Matrix getRowMat(const Vect3d & v) const;
 };
 
-float Matrix::det22()
+float Matrix::det22() const
 {
 	return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 }
 
-float Matrix::det33()
+float Matrix::det33() const
 {
 	return 
 			matrix[0][0] * matrix[1][1] * matrix[2][2]
@@ -81,7 +92,7 @@ float Matrix::det33()
 		- matrix[2][2] * matrix[0][1] * matrix[1][0];
 }
 
-int Matrix::zerosC(unsigned int c)
+int Matrix::zerosC(unsigned int c) const
 {
 	unsigned int z = 0;
 	for (unsigned int i = 0; i < GetHeight(); i++)
@@ -94,7 +105,7 @@ int Matrix::zerosC(unsigned int c)
 	return z;
 }
 
-int Matrix::zerosR(unsigned int r)
+int Matrix::zerosR(unsigned int r) const
 {
 	unsigned int z = 0;
 	for (unsigned int i = 0; i < GetWidth(); i++)
@@ -207,7 +218,7 @@ bool Matrix::operator==(const Matrix & m2) const
 	return true;
 }
 
-Matrix Matrix::transp()
+Matrix Matrix::transp() const
 {
 	//neue Matrix anders herum
 	Matrix mres = Matrix(GetWidth(), GetHeight());
@@ -222,7 +233,7 @@ Matrix Matrix::transp()
 	return mres;
 }
 
-bool Matrix::isQuad()
+bool Matrix::isQuad() const
 {
 	if (GetHeight() == GetWidth())
 	{
@@ -234,7 +245,7 @@ bool Matrix::isQuad()
 	}
 }
 
-Matrix Matrix::getSubMat(unsigned int rowy, unsigned int colx)
+Matrix Matrix::getSubMat(unsigned int rowy, unsigned int colx) const
 {
 	Matrix smat = Matrix(this->GetHeight() - 1, this->GetWidth() - 1);
 	//smat befüllen mit this, rowy und colx überspringen
@@ -259,6 +270,65 @@ Matrix Matrix::getSubMat(unsigned int rowy, unsigned int colx)
 	}
 
 	return smat;
+}
+
+float Matrix::det_rek() const
+{
+	float res = 0;
+	//mehr nullen in zeile oder spalte?
+	if (zerosC(0) > zerosR(0))
+	{
+		//0te spalte durchlaufen -> x = 0
+		for (unsigned int i = 0; i < GetHeight(); i++)
+		{
+			res += get(i, 0) * minor(i, 0);
+		}
+	}
+	else
+	{
+		for (unsigned int i = 0; i < GetHeight(); i++)
+		{
+			res += get(0, i) * minor(0, i);
+		}
+	}
+	//todo: vorherige methode nur bei kleinen Matrizen, 
+	//			bei größeren Zeile / Spalte mit wenigsten nullen suchen
+	return res;
+}
+
+float Matrix::det() const
+{
+	//Zeilenanz. = Spaltenanz.?
+	if (!isQuad())
+	{
+		return NAN;
+	}
+	// ab 3 festes Verfahren
+	if (GetHeight() == 3)
+	{
+		return det33();
+	}
+	if (GetHeight() == 2)
+	{
+		return det22();
+	}
+	if (GetHeight() == 1)
+	{
+		return matrix[0][0];
+	}
+	if (GetHeight == 0)
+	{
+		return NAN;
+	}
+
+	//todo
+	return det_rek();
+}
+
+float Matrix::minor(unsigned int rowy, unsigned int colx) const
+{
+	//-1 hoch zeile + spalte * det. von Untermatrix
+	return pow(-1, rowy + 1 + colx + 1) * this->getSubMat(rowy, colx).det();
 }
 
 int main()
