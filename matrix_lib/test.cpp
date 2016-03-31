@@ -73,7 +73,19 @@ public:
 	float minor(unsigned int rowy, unsigned int colx) const;
 
 	//Zeilenmatrix aus Vectoren
-	Matrix getRowMat(const Vect3d & v) const;
+	static Matrix getRowMat(const Vect3d & v);
+
+	//Zeilenmatrix aus Vectoren
+	static Matrix getRowMat(const Vect3d & v0, const Vect3d & v1, const Vect3d & v2);
+
+	//Spaltenmatrix aus Vektoren
+	static Matrix getColMat(const Vect3d & v);
+
+	//Spaltenmatrix aus Vektoren
+	static Matrix getColMat(const Vect3d & v0, const Vect3d & v1, const Vect3d & v2);
+
+	//Einheitsmatrix, size ab 1 !
+	static Matrix getIdentMat(unsigned int size);
 };
 
 float Matrix::det22() const
@@ -316,7 +328,7 @@ float Matrix::det() const
 	{
 		return matrix[0][0];
 	}
-	if (GetHeight == 0)
+	if (GetHeight() == 0)
 	{
 		return NAN;
 	}
@@ -328,7 +340,61 @@ float Matrix::det() const
 float Matrix::minor(unsigned int rowy, unsigned int colx) const
 {
 	//-1 hoch zeile + spalte * det. von Untermatrix
-	return pow(-1, rowy + 1 + colx + 1) * this->getSubMat(rowy, colx).det();
+	return (float)pow(-1, rowy + 1 + colx + 1) * this->getSubMat(rowy, colx).det();
+}
+
+Matrix Matrix::getRowMat(const Vect3d & v)
+{
+	Matrix res = Matrix(1, 3);
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		res.set(0, i, v.vect[i]);
+	}
+	return res;
+}
+
+Matrix Matrix::getRowMat(const Vect3d & v0, const Vect3d & v1, const Vect3d & v2)
+{
+	Matrix res = Matrix(3, 3);
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		res.set(0, i, v0.vect[i]);
+		res.set(1, i, v1.vect[i]);
+		res.set(2, i, v2.vect[i]);
+	}
+	return res;
+}
+
+Matrix Matrix::getColMat(const Vect3d & v)
+{
+	Matrix res = Matrix(3, 1);
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		res.set(i, 0, v.vect[i]);
+	}
+	return res;
+}
+
+Matrix Matrix::getColMat(const Vect3d & v0, const Vect3d & v1, const Vect3d & v2)
+{
+	Matrix res = Matrix(3, 3);
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		res.set(i, 0, v0.vect[i]);
+		res.set(i, 1, v1.vect[i]);
+		res.set(i, 2, v2.vect[i]);
+	}
+	return res;
+}
+
+Matrix Matrix::getIdentMat(unsigned int size)
+{
+	Matrix res = Matrix(size, size);
+	for (unsigned int i = 0; i < size; i++)
+	{
+		res.set(i, i, 1);
+	}
+	return res;
 }
 
 int main()
