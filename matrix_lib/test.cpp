@@ -18,15 +18,15 @@ private:
 	float det33();
 
 	//Anzahl nullen in Spalte (ab 0!)
-	int zerosC(int c);
+	int zerosC(unsigned int c);
 
 	//Anzal nullen in Zeile (ab 0!)
-	int zerosR(int r);
+	int zerosR(unsigned int r);
 public:
 	//fehler -> err = 1, muss manuell auf 0 gesetzt werden
 	bool err = 0;
 
-	//Rekursive determinantenberechnung !!PRIVATE!!
+	//Rekursive determinantenberechnung nach Laplasschen Entwicklungssatz !!PRIVATE!!
 	float det_rek();
 
 	//Konstruktoren übernehmen
@@ -34,9 +34,9 @@ public:
 
 	//Destuktor der Basisklasse: ~Matrix() -> ~Primitive_Matrix
 
-	float get(unsigned int row, unsigned int col) const;
+	float get(unsigned int rowy, unsigned int colx) const;
 
-	void set(unsigned int row, unsigned int col, float value);
+	void set(unsigned int rowy, unsigned int colx, float value);
 
 	//operatoren
 
@@ -51,9 +51,18 @@ public:
 
 	Matrix operator-(const Matrix & m2) const;
 
+	bool operator==(const Matrix & m2) const;
+
 	//funcs
 
+	//transponieren
 	Matrix transp();
+
+	//true, wenn quadratische Matrix
+	bool isQuad();
+
+	//Liefert Untermatrix durch streichen der Zeile und Spalte
+	Matrix getSubMat(unsigned int rowy, unsigned int colx);
 };
 
 float Matrix::det22()
@@ -61,14 +70,51 @@ float Matrix::det22()
 	return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 }
 
-float Matrix::get(unsigned int row, unsigned int col) const
+float Matrix::det33()
 {
-	return matrix[row][col];
+	return 
+			matrix[0][0] * matrix[1][1] * matrix[2][2]
+		+ matrix[1][0] * matrix[2][1] * matrix[0][2]
+		+ matrix[2][0] * matrix[0][1] * matrix[1][2]
+		- matrix[0][2] * matrix[1][1] * matrix[2][0]
+		- matrix[1][2] * matrix[2][1] * matrix[0][0]
+		- matrix[2][2] * matrix[0][1] * matrix[1][0];
 }
 
-void Matrix::set(unsigned int row, unsigned int col, float value)
+int Matrix::zerosC(unsigned int c)
 {
-	matrix[row][col] = value;
+	unsigned int z = 0;
+	for (unsigned int i = 0; i < GetHeight(); i++)
+	{
+		if (this->get(i, c) == 0)
+		{
+			z++;
+		}
+	}
+	return z;
+}
+
+int Matrix::zerosR(unsigned int r)
+{
+	unsigned int z = 0;
+	for (unsigned int i = 0; i < GetWidth(); i++)
+	{
+		if (this->get(r, i) == 0)
+		{
+			z++;
+		}
+	}
+	return z;
+}
+
+float Matrix::get(unsigned int rowy, unsigned int colx) const
+{
+	return matrix[rowy][colx];
+}
+
+void Matrix::set(unsigned int rowy, unsigned int colx, float value)
+{
+	matrix[rowy][colx] = value;
 }
 
 Matrix Matrix::operator+(const Matrix & m2) const
@@ -139,6 +185,28 @@ Matrix Matrix::operator-(const Matrix & m2) const
 	return *this + (m2 * -1);
 }
 
+bool Matrix::operator==(const Matrix & m2) const
+{
+	//Stimmen höhen und breiten nicht überein?
+	if (this->GetHeight() != m2.GetHeight() || this->GetWidth() != m2.GetWidth())
+	{
+		return false;
+	}
+	//Stimmen Werte nicht überein?
+	for (unsigned int y = 0; y < GetHeight(); y++)
+	{
+		for (unsigned int x = 0; x < GetWidth(); x++)
+		{
+			if (this->get(y, x) != m2.get(y, x))
+			{
+				return false;
+			}
+		}
+	}
+	//Sonst true
+	return true;
+}
+
 Matrix Matrix::transp()
 {
 	//neue Matrix anders herum
@@ -152,6 +220,45 @@ Matrix Matrix::transp()
 		}
 	}
 	return mres;
+}
+
+bool Matrix::isQuad()
+{
+	if (GetHeight() == GetWidth())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+Matrix Matrix::getSubMat(unsigned int rowy, unsigned int colx)
+{
+	Matrix smat = Matrix(this->GetHeight() - 1, this->GetWidth() - 1);
+	//smat befüllen mit this, rowy und colx überspringen
+	unsigned int thisx = 0, thisy = 0, sx = 0, sy = 0;
+	for (;thisy < this->GetHeight(); thisy++)
+	{
+		if (thisy == rowy)
+		{
+			//betroffene Zeile getroffen -> abbrechen
+			continue;
+		}
+		for (;thisx < this->GetWidth(); thisx++)
+		{
+			if (thisx == colx)
+			{
+				//betroffene Spalte getroffen -> abbrechen
+				continue;
+			}
+			smat.set(sy, sx, this->get(thisy, thisx));
+		}
+		sy++;
+	}
+
+	return smat;
 }
 
 int main()
