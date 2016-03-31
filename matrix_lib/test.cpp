@@ -8,17 +8,31 @@
 #include <string>
 #include <cmath>
 
-class Matrix : public Primitive_Matrix
+class Matrix : public virtual Primitive_Matrix
 {
+private:
+	//Determinante 2x2 Matrix (nach Satz)
+	float det22();
+
+	//Determinante 3x3 Matrix (Sarrus)
+	float det33();
+
+	//Anzahl nullen in Spalte (ab 0!)
+	int zerosC(int c);
+
+	//Anzal nullen in Zeile (ab 0!)
+	int zerosR(int r);
 public:
 	//fehler -> err = 1, muss manuell auf 0 gesetzt werden
 	bool err = 0;
 
+	//Rekursive determinantenberechnung !!PRIVATE!!
+	float det_rek();
+
 	//Konstruktoren übernehmen
 	using Primitive_Matrix::Primitive_Matrix;
 
-	//Destruktor übernehmen
-	using Primitive_Matrix::~Primitive_Matrix;
+	//Destuktor der Basisklasse: ~Matrix() -> ~Primitive_Matrix
 
 	float get(unsigned int row, unsigned int col) const;
 
@@ -41,6 +55,11 @@ public:
 
 	Matrix transp();
 };
+
+float Matrix::det22()
+{
+	return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+}
 
 float Matrix::get(unsigned int row, unsigned int col) const
 {
@@ -191,10 +210,13 @@ int main()
 
 	//
 
-	Matrix *mattest = new Matrix(test, 3, 3);
-	std::cout << mattest->ToString() << std::endl;
-	std::cout << mattest->transp().ToString();
-	delete mattest;
+	Matrix *mattest1 = new Matrix(test, 3, 3);
+	Matrix *mattest2 = new Matrix(test, 3, 3);
+	Matrix mattest3 = *mattest1 + *mattest2;
+	std::cout << mattest1->ToString() << std::endl;
+	std::cout << mattest1->transp().ToString();
+	delete mattest1;
+	delete mattest2;
 
 }
 
