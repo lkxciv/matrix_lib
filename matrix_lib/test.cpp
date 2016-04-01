@@ -86,6 +86,9 @@ public:
 
 	//Einheitsmatrix, size ab 1 !
 	static Matrix getIdentMat(unsigned int size);
+
+	//Klebt Matrizen mit gleicher Höhe zusammen
+	Matrix glueTo(const Matrix & rmat) const;
 };
 
 float Matrix::det22() const
@@ -394,6 +397,34 @@ Matrix Matrix::getIdentMat(unsigned int size)
 	{
 		res.set(i, i, 1);
 	}
+	return res;
+}
+
+Matrix Matrix::glueTo(const Matrix & rmat) const
+{
+	Matrix res;
+	//höhe nicht gleich -> abbrechen
+	if (this->GetHeight() != rmat.GetHeight())
+	{
+		res = Matrix();
+		res.err = 1;
+		return res;
+	}
+
+	res = Matrix(GetHeight(), this->GetWidth() + rmat.GetWidth());
+	for (unsigned int y = 0; y < GetHeight(); y++)
+	{
+		for (unsigned int x = 0; x < this->GetWidth(); x++)
+		{
+			res.set(y, x, this->get(y, x));
+		}
+		//nach linker Mat mit anderer Mat auffüllen
+		for (unsigned int x = 0; x < rmat.GetWidth(); x++)
+		{
+			res.set(y, x + this->GetWidth(), rmat.get(y, x));
+		}
+	}
+
 	return res;
 }
 
